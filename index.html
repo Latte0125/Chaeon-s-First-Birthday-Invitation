@@ -10,7 +10,6 @@
     <meta property="og:image" content="가족.jpg">
     <meta property="og:type" content="website">
 
-    <!-- 폰트 추가: 영문 필기체 포함 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&family=Petit+Formal+Script&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,15 +30,12 @@
         .accent { color: #5a7d64; }
         p { font-size: 16px; line-height: 1.8; color: #3d4a3e; text-align: center; }
 
-        /* 메인 페이지 */
         .img-main { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
         .main-content { z-index: 2; color: #fff; text-align: center; background: rgba(0,0,0,0.3); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
         
-        /* 갤러리 */
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 380px; margin: 20px 0; }
         .gallery-grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 
-        /* 정보 카드 */
         .info-card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; width: 100%; border: 1px solid #d1dbd3; }
         .scroll-hint { position: absolute; bottom: 30px; color: rgba(255,255,255,0.7); font-size: 12px; z-index: 3; width: 100%; text-align: center; }
     </style>
@@ -47,16 +43,20 @@
 <body>
 
 <div class="slider">
-    <!-- 1. 메인 (영문 필기체 복구 완료) -->
+    <!-- 1. 메인 (폰트 사이즈 밸런스 조정) -->
     <div class="slide" style="padding:0;">
         <img src="가족.jpg" class="img-main">
         <div class="main-content">
-            <p style="letter-spacing: 5px; margin-bottom: 5px; font-size: 13px; color: rgba(255,255,255,0.9);">THE FIRST BIRTHDAY</p>
-            <h1 style="font-size: 52px; color: #fff; line-height: 1.1; font-weight: 700;">장채온</h1>
-            <!-- 영문 필기체 복구 -->
-            <p style="font-family: 'Petit Formal Script', cursive; font-size: 24px; color: #fff; margin-top: -5px; opacity: 0.9;">Chae On</p>
+            <!-- 날짜와 동일하게 18px로 확대 -->
+            <p style="letter-spacing: 5px; margin-bottom: 15px; font-size: 18px; color: rgba(255,255,255,0.95); font-weight: 500;">THE FIRST BIRTHDAY</p>
             
-            <p style="margin-top: 30px; font-weight: 300; font-size: 17px; color: #fff; text-shadow: 1px 1px 4px rgba(0,0,0,0.3);">2026. 08. 09 SUN PM 12:00</p>
+            <h1 style="font-size: 56px; color: #fff; line-height: 1.0; font-weight: 700;">장채온</h1>
+            
+            <!-- Chae On은 28px 유지 -->
+            <p style="font-family: 'Petit Formal Script', cursive; font-size: 28px; color: #fff; margin-top: 5px; font-weight: 700; opacity: 1;">Chae On</p>
+            
+            <!-- 날짜 18px -->
+            <p style="margin-top: 45px; font-weight: 400; font-size: 18px; color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.4); letter-spacing: 1px;">2026. 08. 09 SUN PM 12:00</p>
         </div>
         <div class="scroll-hint">옆으로 밀어주세요 〉</div>
     </div>
@@ -64,10 +64,10 @@
     <!-- 2. 초대 인사 -->
     <div class="slide bg-custom">
         <div style="width: 80%; text-align: center;">
-            <h2 class="accent" style="margin-bottom: 20px; font-size: 22px;">초대합니다</h2>
-            <p style="font-size: 15px; line-height: 1.7;">기적 같은 선물 채온이가<br>어느덧 첫 생일을 맞이했습니다.<br><br>
+            <h2 class="accent" style="margin-bottom: 25px; font-size: 24px;">초대합니다</h2>
+            <p style="font-size: 15.5px; line-height: 1.9;">기적 같은 선물 채온이가<br>어느덧 첫 생일을 맞이했습니다.<br><br>
                건강하게 자라준 1년,<br>그 소중한 시간들을 축복해 주시는<br>따뜻한 마음 기억하며 살겠습니다.</p>
-            <p style="margin-top: 20px; font-weight: 500; font-size: 14px;">아빠 장창근 · 엄마 송정아 드림</p>
+            <p style="margin-top: 25px; font-weight: 500; font-size: 14px; border-top: 1px solid #d1dbd3; padding-top: 15px; display: inline-block;">아빠 장창근 · 엄마 송정아 드림</p>
         </div>
     </div>
 
@@ -97,9 +97,9 @@
     <!-- 5. 마무리 -->
     <div class="slide bg-custom">
         <div style="width: 80%; text-align: center;">
-            <h2 style="font-size: 36px; color: #5a7d64; margin-bottom: 25px; font-family: 'Petit Formal Script', cursive;">Thank you</h2>
-            <p style="font-size: 15px;">채온이의 첫 걸음을 응원해 주시고,<br>사랑으로 지켜봐 주시는 모든 분들께<br>진심으로 감사의 인사를 올립니다.</p>
-            <p style="margin-top: 20px; font-size: 15px;">지혜롭고 따뜻한 아이로 키우겠습니다.<br>감사합니다.</p>
+            <h2 style="font-size: 38px; color: #5a7d64; margin-bottom: 30px; font-family: 'Petit Formal Script', cursive; font-weight: 700;">Thank you</h2>
+            <p style="font-size: 15.5px; line-height: 1.9;">채온이의 첫 걸음을 응원해 주시고,<br>사랑으로 지켜봐 주시는 모든 분들께<br>진심으로 감사의 인사를 올립니다.</p>
+            <p style="margin-top: 25px; font-size: 15.5px;">지혜롭고 따뜻한 아이로 키우겠습니다.<br>감사합니다.</p>
         </div>
     </div>
 </div>
