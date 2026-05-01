@@ -10,6 +10,7 @@
     <meta property="og:image" content="가족.jpg">
     <meta property="og:type" content="website">
 
+    <!-- 폰트 추가: 영문 필기체 포함 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&family=Petit+Formal+Script&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,7 +21,6 @@
         
         .slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: relative; }
 
-        /* 배경 리스 설정 - 캡처본 배경으로 복구 */
         .bg-custom {
             background-image: linear-gradient(rgba(240, 244, 241, 0.88), rgba(240, 244, 241, 0.88)), url('배경.jpg');
             background-size: cover;
@@ -33,7 +33,7 @@
 
         /* 메인 페이지 */
         .img-main { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
-        .main-content { z-index: 2; color: #fff; text-align: center; background: rgba(0,0,0,0.25); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+        .main-content { z-index: 2; color: #fff; text-align: center; background: rgba(0,0,0,0.3); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
         
         /* 갤러리 */
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 380px; margin: 20px 0; }
@@ -41,22 +41,27 @@
 
         /* 정보 카드 */
         .info-card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; width: 100%; border: 1px solid #d1dbd3; }
-        .scroll-hint { position: absolute; bottom: 30px; color: rgba(255,255,255,0.7); font-size: 12px; z-index: 3; }
+        .scroll-hint { position: absolute; bottom: 30px; color: rgba(255,255,255,0.7); font-size: 12px; z-index: 3; width: 100%; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="slider">
+    <!-- 1. 메인 (영문 필기체 복구 완료) -->
     <div class="slide" style="padding:0;">
         <img src="가족.jpg" class="img-main">
         <div class="main-content">
-            <p style="letter-spacing: 5px; margin-bottom: 10px; font-size: 14px; color: #fff;">THE FIRST BIRTHDAY</p>
-            <h1 style="font-size: 58px; color: #fff; line-height: 1.2;">장채온</h1>
-            <p style="margin-top: 25px; font-weight: 300; font-size: 18.5px; color: #fff; text-shadow: 1px 1px 4px rgba(0,0,0,0.3);">2026. 08. 09 SUN PM 12:00</p>
+            <p style="letter-spacing: 5px; margin-bottom: 5px; font-size: 13px; color: rgba(255,255,255,0.9);">THE FIRST BIRTHDAY</p>
+            <h1 style="font-size: 52px; color: #fff; line-height: 1.1; font-weight: 700;">장채온</h1>
+            <!-- 영문 필기체 복구 -->
+            <p style="font-family: 'Petit Formal Script', cursive; font-size: 24px; color: #fff; margin-top: -5px; opacity: 0.9;">Chae On</p>
+            
+            <p style="margin-top: 30px; font-weight: 300; font-size: 17px; color: #fff; text-shadow: 1px 1px 4px rgba(0,0,0,0.3);">2026. 08. 09 SUN PM 12:00</p>
         </div>
         <div class="scroll-hint">옆으로 밀어주세요 〉</div>
     </div>
 
+    <!-- 2. 초대 인사 -->
     <div class="slide bg-custom">
         <div style="width: 80%; text-align: center;">
             <h2 class="accent" style="margin-bottom: 20px; font-size: 22px;">초대합니다</h2>
@@ -66,6 +71,7 @@
         </div>
     </div>
 
+    <!-- 3. 일시 및 장소 -->
     <div class="slide bg-custom">
         <h2 class="accent" style="margin-bottom: 25px;">일시 및 장소</h2>
         <div class="info-card">
@@ -78,6 +84,7 @@
         </div>
     </div>
 
+    <!-- 4. 사진첩 -->
     <div class="slide bg-custom">
         <h2 class="accent" style="margin-bottom: 15px;">사진첩</h2>
         <div class="gallery-grid">
@@ -87,6 +94,7 @@
         </div>
     </div>
 
+    <!-- 5. 마무리 -->
     <div class="slide bg-custom">
         <div style="width: 80%; text-align: center;">
             <h2 style="font-size: 36px; color: #5a7d64; margin-bottom: 25px; font-family: 'Petit Formal Script', cursive;">Thank you</h2>
