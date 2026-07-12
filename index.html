@@ -28,7 +28,6 @@
             background-position: center;
         }
 
-        /* 텍스트를 모바일 화면 수직/수평 정중앙에 배치하는 박스 */
         .text-center-wrapper { 
             width: 100%; 
             max-width: 360px; 
@@ -80,7 +79,7 @@
         </div>
     </div>
 
-    <!-- 2. 초대 인사 (오류 아이콘 완전 제거 및 정중앙 정렬) -->
+    <!-- 2. 초대 인사 -->
     <div class="slide bg-custom">
         <div class="text-center-wrapper">
             <h2 class="accent" style="margin-bottom: 25px; font-size: 23px; letter-spacing: 2px;">초대합니다</h2>
@@ -123,7 +122,7 @@
         </div>
     </div>
 
-    <!-- 4. 마무리 (오류 아이콘 완전 제거 및 정중앙 정렬) -->
+    <!-- 4. 마무리 -->
     <div class="slide bg-custom">
         <div class="text-center-wrapper"> 
             <h2 style="font-size: 36px; color: #5a7d64; margin-bottom: 25px; font-family: 'Petit Formal Script', cursive; font-weight: 700;">Thank you</h2>
@@ -155,12 +154,21 @@
     let slides = [];
     let currentIndex = 0;
 
+    // 변경된 핵심 로직: 1번부터 순서대로 보장하며 이미지 로드
     function initProject() {
-        for (let i = 1; i <= maxPhotos; i++) {
-            const imgUrl = `사진${i}.jpg`;
+        let checkIndex = 1;
+
+        function loadNextPhoto() {
+            if (checkIndex > maxPhotos) {
+                updateSlidesArray();
+                return;
+            }
+
+            const imgUrl = `사진${checkIndex}.jpg`;
             const testImg = new Image();
-            
+
             testImg.onload = function() {
+                // 이미지가 확인되면 즉시 순서대로 슬라이드 생성 및 추가
                 const photoSlide = document.createElement('div');
                 photoSlide.className = 'slide';
                 photoSlide.style.padding = '0';
@@ -169,13 +177,20 @@
                     <div style="position: absolute; bottom: 45px; right: 30px; z-index: 3; background: rgba(0,0,0,0.4); color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 300; letter-spacing: 1px;">Chae On</div>
                 `;
                 sliderContainer.appendChild(photoSlide);
+                
+                checkIndex++;
+                loadNextPhoto(); // 순서 보장을 위해 다음 번호 로드 함수 호출
+            };
+
+            testImg.onerror = function() {
+                // 순서대로 검사하다가 파일이 끊기면(예: 10번까지 있고 11번이 없을 때) 검사 종료 및 렌더링
                 updateSlidesArray();
             };
-            
-            testImg.onerror = function() { return; };
+
             testImg.src = imgUrl;
         }
-        updateSlidesArray();
+
+        loadNextPhoto();
     }
 
     function updateSlidesArray() {
