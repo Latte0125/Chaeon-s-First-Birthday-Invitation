@@ -170,7 +170,7 @@
                 photoSlide.className = 'slide';
                 photoSlide.style.padding = '0';
                 photoSlide.innerHTML = `
-                    <img src="${imgUrl}" class="img-fullscreen img-center-focus" onclick="openModal(this.src)">
+                    <img src="${imgUrl}" class="img-fullscreen img-center-focus" loading="lazy" onclick="openModal(this.src)">
                     <div style="position: absolute; bottom: 45px; right: 30px; z-index: 3; background: rgba(0,0,0,0.4); color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 300; letter-spacing: 1px;">Chae On</div>
                 `;
                 sliderContainer.appendChild(photoSlide);
