@@ -17,7 +17,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body, html { height: 100%; background-color: #f0f4f1; font-family: 'Noto Sans KR', sans-serif; overflow: hidden; position: fixed; width: 100%; }
         
-        /* 페이드 인/아웃 구조 정의 */
         .slider-container { position: relative; width: 100%; height: 100vh; overflow: hidden; }
         .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, visibility 0.5s; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; z-index: 1; }
         .slide.active { opacity: 1; visibility: visible; z-index: 2; }
@@ -85,10 +84,10 @@
             <h2 class="accent" style="margin-bottom: 25px; font-size: 23px; letter-spacing: 2px;">초대합니다</h2>
             <p style="font-weight: 500; color: #2a3a2d; margin-bottom: 12px; font-size: 16px;">'채움'이라는 말처럼,</p>
             <p>
-                살면서 원하는 것들로<br>
+                살아가며 원하는 것들로<br>
                 삶을 채워 나가길 바라는 마음으로<br>
                 채온이라는 이름을 지었습니다.<br><br>
-                그리고 지금, 채온이는 우리 부부의 하루를<br>
+                그리고 지금, 채온이는 우리의 하루를<br>
                 사랑과 웃음으로 가득 채워 주는<br>
                 가장 소중한 선물이 되었습니다.<br><br>
                 첫 번째 생일을 맞이한 채온이의<br>
@@ -154,7 +153,6 @@
     let slides = [];
     let currentIndex = 0;
 
-    // 변경된 핵심 로직: 1번부터 순서대로 보장하며 이미지 로드
     function initProject() {
         let checkIndex = 1;
 
@@ -168,7 +166,6 @@
             const testImg = new Image();
 
             testImg.onload = function() {
-                // 이미지가 확인되면 즉시 순서대로 슬라이드 생성 및 추가
                 const photoSlide = document.createElement('div');
                 photoSlide.className = 'slide';
                 photoSlide.style.padding = '0';
@@ -179,11 +176,10 @@
                 sliderContainer.appendChild(photoSlide);
                 
                 checkIndex++;
-                loadNextPhoto(); // 순서 보장을 위해 다음 번호 로드 함수 호출
+                loadNextPhoto(); 
             };
 
             testImg.onerror = function() {
-                // 순서대로 검사하다가 파일이 끊기면(예: 10번까지 있고 11번이 없을 때) 검사 종료 및 렌더링
                 updateSlidesArray();
             };
 
@@ -209,8 +205,17 @@
         });
     }
 
+    // 변경된 무한 루프 로직
     function goToSlide(index) {
-        if (index < 0 || index >= slides.length) return;
+        // 첫 번째 장에서 왼쪽으로 넘기면 가장 마지막 장으로 연결
+        if (index < 0) {
+            index = slides.length - 1;
+        }
+        // 마지막 장에서 오른쪽으로 넘기면 다시 첫 번째 장으로 연결
+        if (index >= slides.length) {
+            index = 0;
+        }
+
         slides[currentIndex].classList.remove('active');
         slides[index].classList.add('active');
         currentIndex = index;
@@ -257,7 +262,9 @@
 
     function closeModal() {
         const modal = document.getElementById('photoModal');
+        const modalImg = document.getElementById('modalImg');
         modal.classList.remove('show');
+        setTimeout(() => { modalImg.src = ''; }, 300);
     }
 
     window.onload = initProject;
