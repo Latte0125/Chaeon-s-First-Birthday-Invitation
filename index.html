@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>채온이의 첫 돌 초대장</title>
     
-    <!-- 카카오톡 공유 시 썸네일 최적화 메타 태그 -->
     <meta property="og:title" content="장채온의 첫 돌 초대장">
     <meta property="og:description" content="2026.08.09(일) 낮 12:00 코트야드 바이 메리어트 판교">
     <meta property="og:image" content="가족.jpg">
@@ -20,22 +19,30 @@
         
         /* 페이드 인/아웃 구조 정의 */
         .slider-container { position: relative; width: 100%; height: 100vh; overflow: hidden; }
-        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out, visibility 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 1; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.5s ease-in-out, visibility 0.5s; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; z-index: 1; }
         .slide.active { opacity: 1; visibility: visible; z-index: 2; }
 
         .bg-custom {
-            background-image: linear-gradient(rgba(240, 244, 241, 0.85), rgba(240, 244, 241, 0.85)), url('배경.jpg');
+            background-image: linear-gradient(rgba(240, 244, 241, 0.9), rgba(240, 244, 241, 0.9)), url('배경.jpg');
             background-size: cover;
             background-position: center;
         }
 
-        .wreath-wrapper { position: relative; width: 100%; max-width: 440px; display: flex; align-items: center; justify-content: center; }
-        .wreath-img { width: 100%; height: auto; display: block; }
-        .wreath-text-overlay { position: absolute; left: 50%; transform: translate(-50%, -46%); width: 85%; text-align: center; z-index: 5; }
+        /* 텍스트를 모바일 화면 수직/수평 정중앙에 배치하는 박스 */
+        .text-center-wrapper { 
+            width: 100%; 
+            max-width: 360px; 
+            text-align: center; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            padding: 10px 0;
+        }
 
         h1, h2 { font-family: 'Noto Serif KR', serif; color: #1a1a1a; }
         .accent { color: #5a7d64; }
-        p { font-size: 14.5px; line-height: 1.85; color: #3d4a3e; text-align: center; letter-spacing: -0.3px; }
+        p { font-size: 15px; line-height: 1.9; color: #3d4a3e; text-align: center; letter-spacing: -0.3px; }
 
         .img-fullscreen { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; cursor: pointer; }
         .img-center-focus { object-fit: cover; object-position: center 35%; }
@@ -43,19 +50,16 @@
         .main-content { z-index: 2; color: #fff; text-align: center; background: rgba(0,0,0,0.3); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
         .info-card { background: rgba(255, 255, 255, 0.95); padding: 22px; border-radius: 15px; width: 100%; max-width: 360px; border: 1px solid #d1dbd3; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* 지도 버튼 그룹 스타일 */
         .map-btn-group { display: flex; gap: 10px; margin-top: 15px; justify-content: center; width: 100%; }
-        .map-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid #d1dbd3; background: #fff; color: #333; transition: background 0.2s; }
+        .map-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid #d1dbd3; background: #fff; color: #333; }
         .map-btn.navi { background: #00c73c; color: #fff; border: none; }
         .map-btn.kakao { background: #fee500; color: #191919; border: none; }
 
-        /* 동그라미 인디케이터 */
         .indicator-container { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; background: rgba(0,0,0,0.15); padding: 6px 12px; border-radius: 20px; }
         .indicator-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: background 0.3s, transform 0.3s; }
         .indicator-dot.active { background: #5a7d64; transform: scale(1.2); }
         .light-dots .indicator-dot.active { background: #fff; }
 
-        /* 사진 전체화면 오버레이 모달 */
         .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
         .fullscreen-modal img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .fullscreen-modal.show { display: flex; opacity: 1; }
@@ -76,76 +80,69 @@
         </div>
     </div>
 
-    <!-- 2. 초대 인사 (첫 번째 문구 수정 반영) -->
+    <!-- 2. 초대 인사 (오류 아이콘 완전 제거 및 정중앙 정렬) -->
     <div class="slide bg-custom">
-        <div class="wreath-wrapper">
-            <img src="image_ba1eb6.jpg" class="wreath-img">
-            <div class="wreath-text-overlay">
-                <h2 class="accent" style="margin-bottom: 15px; font-size: 22px; letter-spacing: 2px;">초대합니다</h2>
-                <p style="font-weight: 500; color: #2a3a2d; margin-bottom: 8px;">'채움'이라는 말처럼,</p>
-                <p>
-                    살아가며 원하는 것들을 하나씩<br>
-                    채워 나가길 바하는 마음으로<br>
-                    채온이라는 이름을 지었습니다.<br><br>
-                    그리고 지금, 채온이는 우리의 하루를<br>
-                    사랑과 웃음으로 가득 채워 주는<br>
-                    가장 소중한 선물이 되었습니다.<br><br>
-                    첫 번째 생일을 맞이한 채온이의<br>
-                    특별한 하루를 함께 축복해 주시면<br>
-                    감사하겠습니다.
-                </p>
-                <p style="margin-top: 20px; font-weight: 500; font-size: 14px; color: #5a7d64; border-top: 1px dashed rgba(90, 125, 100, 0.3); padding-top: 12px;">
-                    아빠 장창근 · 엄마 송정아 드림
-                </p>
-            </div>
+        <div class="text-center-wrapper">
+            <h2 class="accent" style="margin-bottom: 25px; font-size: 23px; letter-spacing: 2px;">초대합니다</h2>
+            <p style="font-weight: 500; color: #2a3a2d; margin-bottom: 12px; font-size: 16px;">'채움'이라는 말처럼,</p>
+            <p>
+                살아가며 원하는 것들을 하나씩<br>
+                채워 나가길 바라는 마음으로<br>
+                채온이라는 이름을 지었습니다.<br><br>
+                그리고 지금, 채온이는 우리의 하루를<br>
+                사랑과 웃음으로 가득 채워 주는<br>
+                가장 소중한 선물이 되었습니다.<br><br>
+                첫 번째 생일을 맞이한 채온이의<br>
+                특별한 하루를 함께 축복해 주시면<br>
+                감사하겠습니다.
+            </p>
+            <p style="margin-top: 30px; font-weight: 500; font-size: 14.5px; color: #5a7d64; border-top: 1px dashed rgba(90, 125, 100, 0.4); width: 80%; padding-top: 15px;">
+                아빠 장창근 · 엄마 송정아 드림
+            </p>
         </div>
     </div>
 
     <!-- 3. 일시 및 장소 -->
     <div class="slide bg-custom">
-        <h2 class="accent" style="margin-bottom: 20px;">일시 및 장소</h2>
-        <div class="info-card">
-            <p style="font-size: 17px;"><strong>2026. 08. 09 (일) 낮 12:00</strong></p>
-            <p style="margin-top:10px; color: #1a1a1a; font-weight:500;">코트야드 바이 메리어트 판교 8층<br>모모카페 (Momo Cafe)</p>
-            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #d1dbd3;">
-            <p style="font-size: 14px; color: #555;">경기 성남시 분당구 판교역로192번길 12</p>
-            
-            <!-- 오시는 길 버튼 그룹 -->
-            <div class="map-btn-group">
-                <a href="https://map.naver.com/v5/search/코트야드바이메리어트판교" target="_blank" class="map-btn navi">네이버지도 길찾기</a>
-                <a href="https://map.kakao.com/link/to/코트야드바이메리어트판교,37.3976,127.1121" target="_blank" class="map-btn kakao">카카오맵 길찾기</a>
+        <div class="text-center-wrapper">
+            <h2 class="accent" style="margin-bottom: 20px; font-size: 23px; letter-spacing: 1px;">일시 및 장소</h2>
+            <div class="info-card">
+                <p style="font-size: 17px;"><strong>2026. 08. 09 (일) 낮 12:00</strong></p>
+                <p style="margin-top:10px; color: #1a1a1a; font-weight:500; font-size: 15.5px;">코트야드 바이 메리어트 판교 8층<br>모모카페 (Momo Cafe)</p>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px solid #d1dbd3;">
+                <p style="font-size: 14px; color: #555;">경기 성남시 분당구 판교역로192번길 12</p>
+                
+                <div class="map-btn-group">
+                    <a href="https://map.naver.com/v5/search/코트야드바이메리어트판교" target="_blank" class="map-btn navi">네이버지도 길찾기</a>
+                    <a href="https://map.kakao.com/link/to/코트야드바이메리어트판교,37.3976,127.1121" target="_blank" class="map-btn kakao">카카오맵 길찾기</a>
+                </div>
+                
+                <p style="font-size: 14px; color: #5a7d64; font-weight: 600; margin-top: 15px;">판교역 1번 출구 도보 300m</p>
+                <p style="font-size: 13px; color: #888; margin-top: 5px;">지하 주차장 4시간 무료 지원</p>
             </div>
-            
-            <p style="font-size: 14px; color: #5a7d64; font-weight: 600; margin-top: 15px;">판교역 1번 출구 도보 300m</p>
-            <p style="font-size: 13px; color: #888; margin-top: 5px;">지하 주차장 4시간 무료 지원</p>
         </div>
     </div>
 
-    <!-- 4. 마무리 (두 번째 문구 수정 반영) -->
+    <!-- 4. 마무리 (오류 아이콘 완전 제거 및 정중앙 정렬) -->
     <div class="slide bg-custom">
-        <div class="wreath-wrapper">
-            <img src="image_ba1eb6.jpg" class="wreath-img">
-            <div class="wreath-text-overlay" style="transform: translate(-50%, -48%); width: 88%;"> 
-                <h2 style="font-size: 34px; color: #5a7d64; margin-bottom: 16px; font-family: 'Petit Formal Script', cursive; font-weight: 700;">Thank you</h2>
-                <p>
-                    채온이의 첫돌을 맞아<br>
-                    소중한 분들을 모시고자 합니다.<br><br>
-                    따뜻한 마음을 담아 지은 이름처럼,<br>
-                    여러분의 귀한 걸음으로 채온의 첫 번째 생일을<br>
-                    따뜻하게 채워 주시면 더없이 큰 기쁨이 되겠습니다.<br><br>
-                    함께해 주시는 마음 오래도록 간직하며<br>
-                    사랑과 온기를 나눌 줄 아는 아이로 키우겠습니다.<br><br>
-                    감사합니다.
-                </p>
-            </div>
+        <div class="text-center-wrapper"> 
+            <h2 style="font-size: 36px; color: #5a7d64; margin-bottom: 25px; font-family: 'Petit Formal Script', cursive; font-weight: 700;">Thank you</h2>
+            <p>
+                채온이의 첫돌을 맞아<br>
+                소중한 분들을 모시고자 합니다.<br><br>
+                따뜻한 마음을 담아 지은 이름처럼,<br>
+                여러분의 귀한 걸음으로 채온의 첫 번째 생일을<br>
+                따뜻하게 채워 주시면 더없이 큰 기쁨이 되겠습니다.<br><br>
+                함께해 주시는 마음 오래도록 간직하며<br>
+                사랑과 온기를 나눌 줄 아는 아이로 키우겠습니다.<br><br>
+                감사합니다.
+            </p>
         </div>
     </div>
 </div>
 
-<!-- 동그라미 인디케이터 컨테이너 -->
 <div class="indicator-container" id="indicatorContainer"></div>
 
-<!-- 이미지 전체화면 모달 오버레이 -->
 <div class="fullscreen-modal" id="photoModal" onclick="closeModal()">
     <span class="close-modal" onclick="closeModal()">&times;</span>
     <img id="modalImg" src="">
@@ -158,10 +155,7 @@
     let slides = [];
     let currentIndex = 0;
 
-    // 1. 순서대로 올린 이미지 동적 탐색 및 로드 구조
     function initProject() {
-        let loadedCount = 0;
-        
         for (let i = 1; i <= maxPhotos; i++) {
             const imgUrl = `사진${i}.jpg`;
             const testImg = new Image();
@@ -178,9 +172,7 @@
                 updateSlidesArray();
             };
             
-            testImg.onerror = function() {
-                return; // 파일이 순서대로 끊기면 탐색 중단
-            };
+            testImg.onerror = function() { return; };
             testImg.src = imgUrl;
         }
         updateSlidesArray();
@@ -192,7 +184,6 @@
         goToSlide(0);
     }
 
-    // 2. 현재 페이지 동그라미 인디케이터 생성
     function createIndicators() {
         indicatorContainer.innerHTML = '';
         slides.forEach((_, index) => {
@@ -209,14 +200,12 @@
         slides[index].classList.add('active');
         currentIndex = index;
 
-        // 인디케이터 활성화 업데이트
         const dots = document.querySelectorAll('.indicator-dot');
         dots.forEach((dot, idx) => {
             if (idx === currentIndex) dot.classList.add('active');
             else dot.classList.remove('active');
         });
 
-        // 1번 슬라이드나 사진첩 슬라이드처럼 어두운 배경일 경우 점 색상 반전 처리
         if (slides[currentIndex].style.padding === '0') {
             indicatorContainer.classList.add('light-dots');
         } else {
@@ -224,10 +213,9 @@
         }
     }
 
-    // 3. 고감도 터치 스와이프 감도 개선 엔진
     let startX = 0;
     let distX = 0;
-    const threshold = 40; // 조금만 스와이프해도 자연스럽게 넘어가도록 임계값 최적화
+    const threshold = 40;
 
     sliderContainer.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
@@ -240,12 +228,11 @@
 
     sliderContainer.addEventListener('touchend', () => {
         if (Math.abs(distX) >= threshold) {
-            if (distX > 0) goToSlide(currentIndex - 1); // 오른쪽 스와이프 시 이전 페이지
-            else goToSlide(currentIndex + 1);          // 왼쪽 스와이프 시 다음 페이지
+            if (distX > 0) goToSlide(currentIndex - 1);
+            else goToSlide(currentIndex + 1);
         }
     });
 
-    // 4. 사진 터치 시 전체화면 보기 모달 제어
     function openModal(src) {
         const modal = document.getElementById('photoModal');
         const modalImg = document.getElementById('modalImg');
