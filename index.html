@@ -2,23 +2,26 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>채온이의 첫 돌 초대장</title>
     
-    <meta property="og:title" content="채온이의 첫 돌 초대장">
-    <meta property="og:description" content="2026.08.09 채온이의 첫 번째 생일 파티">
+    <!-- 카카오톡 공유 시 썸네일 최적화 메타 태그 -->
+    <meta property="og:title" content="장채온의 첫 돌 초대장">
+    <meta property="og:description" content="2026.08.09(일) 낮 12:00 코트야드 바이 메리어트 판교">
     <meta property="og:image" content="가족.jpg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="400">
     <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&family=Petit+Formal+Script&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body, html { height: 100%; background-color: #f0f4f1; font-family: 'Noto Sans KR', sans-serif; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body, html { height: 100%; background-color: #f0f4f1; font-family: 'Noto Sans KR', sans-serif; overflow: hidden; position: fixed; width: 100%; }
         
-        .slider { display: flex; width: 100%; height: 100vh; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-        .slider::-webkit-scrollbar { display: none; }
-        
-        .slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: relative; }
+        /* 페이드 인/아웃 구조 정의 */
+        .slider-container { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; visibility: hidden; transition: opacity 0.6s ease-in-out, visibility 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 1; }
+        .slide.active { opacity: 1; visibility: visible; z-index: 2; }
 
         .bg-custom {
             background-image: linear-gradient(rgba(240, 244, 241, 0.85), rgba(240, 244, 241, 0.85)), url('배경.jpg');
@@ -26,107 +29,237 @@
             background-position: center;
         }
 
-        .wreath-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 440px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .wreath-img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .wreath-text-overlay {
-            position: absolute;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            text-align: center;
-            z-index: 5;
-        }
+        .wreath-wrapper { position: relative; width: 100%; max-width: 440px; display: flex; align-items: center; justify-content: center; }
+        .wreath-img { width: 100%; height: auto; display: block; }
+        .wreath-text-overlay { position: absolute; left: 50%; transform: translate(-50%, -46%); width: 85%; text-align: center; z-index: 5; }
 
         h1, h2 { font-family: 'Noto Serif KR', serif; color: #1a1a1a; }
         .accent { color: #5a7d64; }
-        p { font-size: 16px; line-height: 1.8; color: #3d4a3e; text-align: center; }
+        p { font-size: 14.5px; line-height: 1.85; color: #3d4a3e; text-align: center; letter-spacing: -0.3px; }
 
-        .img-main { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; }
-        .main-content { z-index: 2; color: #fff; text-align: center; background: rgba(0,0,0,0.25); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+        .img-fullscreen { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; cursor: pointer; }
+        .img-center-focus { object-fit: cover; object-position: center 35%; }
+
+        .main-content { z-index: 2; color: #fff; text-align: center; background: rgba(0,0,0,0.3); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+        .info-card { background: rgba(255, 255, 255, 0.95); padding: 22px; border-radius: 15px; width: 100%; max-width: 360px; border: 1px solid #d1dbd3; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 380px; margin: 20px 0; }
-        .gallery-grid img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        /* 지도 버튼 그룹 스타일 */
+        .map-btn-group { display: flex; gap: 10px; margin-top: 15px; justify-content: center; width: 100%; }
+        .map-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid #d1dbd3; background: #fff; color: #333; transition: background 0.2s; }
+        .map-btn.navi { background: #00c73c; color: #fff; border: none; }
+        .map-btn.kakao { background: #fee500; color: #191919; border: none; }
 
-        .info-card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px; width: 100%; border: 1px solid #d1dbd3; }
-        .scroll-hint { position: absolute; bottom: 30px; color: rgba(255,255,255,0.7); font-size: 12px; z-index: 3; }
+        /* 동그라미 인디케이터 */
+        .indicator-container { position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; background: rgba(0,0,0,0.15); padding: 6px 12px; border-radius: 20px; }
+        .indicator-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: background 0.3s, transform 0.3s; }
+        .indicator-dot.active { background: #5a7d64; transform: scale(1.2); }
+        .light-dots .indicator-dot.active { background: #fff; }
+
+        /* 사진 전체화면 오버레이 모달 */
+        .fullscreen-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+        .fullscreen-modal img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .fullscreen-modal.show { display: flex; opacity: 1; }
+        .close-modal { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 30px; cursor: pointer; z-index: 101; font-family: sans-serif; }
     </style>
 </head>
 <body>
 
-<div class="slider">
-    <div class="slide" style="padding:0;">
-        <img src="가족.jpg" class="img-main">
+<div class="slider-container" id="sliderContainer">
+    <!-- 1. 메인 -->
+    <div class="slide active" style="padding:0;">
+        <img src="가족.jpg" class="img-fullscreen img-center-focus" onclick="openModal(this.src)">
         <div class="main-content">
-            <p style="letter-spacing: 5px; margin-bottom: 10px; font-size: 14px; color: #fff;">THE FIRST BIRTHDAY</p>
-            <h1 style="font-size: 58px; color: #fff; line-height: 1.2;">장채온</h1>
-            <p style="margin-top: 25px; font-weight: 300; font-size: 18.5px; color: #fff; text-shadow: 1px 1px 4px rgba(0,0,0,0.3);">2026. 08. 09 SUN PM 12:00</p>
+            <p style="letter-spacing: 5px; margin-bottom: 15px; font-size: 18px; color: rgba(255,255,255,0.95); font-weight: 500;">THE FIRST BIRTHDAY</p>
+            <h1 style="font-size: 56px; color: #fff; line-height: 1.0; font-weight: 700;">장채온</h1>
+            <p style="font-family: 'Petit Formal Script', cursive; font-size: 28px; color: #fff; margin-top: 5px; font-weight: 700;">Chae On</p>
+            <p style="margin-top: 45px; font-weight: 400; font-size: 18px; color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.4);">2026. 08. 09 SUN PM 12:00</p>
         </div>
-        <div class="scroll-hint">옆으로 밀어주세요 〉</div>
     </div>
 
+    <!-- 2. 초대 인사 (첫 번째 문구 수정 반영) -->
     <div class="slide bg-custom">
         <div class="wreath-wrapper">
             <img src="image_ba1eb6.jpg" class="wreath-img">
-            <div class="wreath-text-overlay" style="top: 48%;">
-                <h2 class="accent" style="margin-bottom: 12px; font-size: 22px;">초대합니다</h2>
-                <p style="font-size: 15px; line-height: 1.7;">기적 같은 선물 채온이가<br>어느덧 첫 생일을 맞이했습니다.<br><br>
-                   건강하게 자라준 1년,<br>그 소중한 시간들을 축복해 주시는<br>따뜻한 마음 기억하며 살겠습니다.</p>
-                <p style="margin-top: 15px; font-weight: 500; font-size: 14px;">아빠 장창근 · 엄마 송정아 드림</p>
+            <div class="wreath-text-overlay">
+                <h2 class="accent" style="margin-bottom: 15px; font-size: 22px; letter-spacing: 2px;">초대합니다</h2>
+                <p style="font-weight: 500; color: #2a3a2d; margin-bottom: 8px;">'채움'이라는 말처럼,</p>
+                <p>
+                    살아가며 원하는 것들을 하나씩<br>
+                    채워 나가길 바하는 마음으로<br>
+                    채온이라는 이름을 지었습니다.<br><br>
+                    그리고 지금, 채온이는 우리의 하루를<br>
+                    사랑과 웃음으로 가득 채워 주는<br>
+                    가장 소중한 선물이 되었습니다.<br><br>
+                    첫 번째 생일을 맞이한 채온이의<br>
+                    특별한 하루를 함께 축복해 주시면<br>
+                    감사하겠습니다.
+                </p>
+                <p style="margin-top: 20px; font-weight: 500; font-size: 14px; color: #5a7d64; border-top: 1px dashed rgba(90, 125, 100, 0.3); padding-top: 12px;">
+                    아빠 장창근 · 엄마 송정아 드림
+                </p>
             </div>
         </div>
     </div>
 
+    <!-- 3. 일시 및 장소 -->
     <div class="slide bg-custom">
-        <h2 class="accent" style="margin-bottom: 25px;">일시 및 장소</h2>
+        <h2 class="accent" style="margin-bottom: 20px;">일시 및 장소</h2>
         <div class="info-card">
-            <p style="font-size: 18px;"><strong>2026. 08. 09 (일) 낮 12:00</strong></p>
-            <p style="margin-top:12px; color: #1a1a1a;">코트야드 바이 메리어트 판교 8층<br>모모카페 (Momo Cafe)</p>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #d1dbd3;">
-            <p style="font-size: 15px; color: #555;">경기 성남시 분당구 판교역로192번길 12</p>
-            <p style="font-size: 16px; color: #5a7d64; font-weight: 600; margin-top: 8px;">판교역 1번 출구 도보 300m</p>
-            <p style="font-size: 14px; color: #888; margin-top: 10px;">지하 주차장 4시간 무료 지원</p>
+            <p style="font-size: 17px;"><strong>2026. 08. 09 (일) 낮 12:00</strong></p>
+            <p style="margin-top:10px; color: #1a1a1a; font-weight:500;">코트야드 바이 메리어트 판교 8층<br>모모카페 (Momo Cafe)</p>
+            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #d1dbd3;">
+            <p style="font-size: 14px; color: #555;">경기 성남시 분당구 판교역로192번길 12</p>
+            
+            <!-- 오시는 길 버튼 그룹 -->
+            <div class="map-btn-group">
+                <a href="https://map.naver.com/v5/search/코트야드바이메리어트판교" target="_blank" class="map-btn navi">네이버지도 길찾기</a>
+                <a href="https://map.kakao.com/link/to/코트야드바이메리어트판교,37.3976,127.1121" target="_blank" class="map-btn kakao">카카오맵 길찾기</a>
+            </div>
+            
+            <p style="font-size: 14px; color: #5a7d64; font-weight: 600; margin-top: 15px;">판교역 1번 출구 도보 300m</p>
+            <p style="font-size: 13px; color: #888; margin-top: 5px;">지하 주차장 4시간 무료 지원</p>
         </div>
     </div>
 
+    <!-- 4. 마무리 (두 번째 문구 수정 반영) -->
     <div class="slide bg-custom">
         <div class="wreath-wrapper">
             <img src="image_ba1eb6.jpg" class="wreath-img">
-            <div class="wreath-text-overlay" style="top: 53%;"> <h2 style="font-size: 36px; color: #5a7d64; margin-bottom: 20px; font-family: 'Petit Formal Script', cursive;">Thank you</h2>
-                <p style="font-size: 15px;">채온이의 첫 걸음을 응원해 주시고,<br>사랑으로 지켜봐 주시는 모든 분들께<br>진심으로 감사의 인사를 올립니다.</p>
-                <p style="margin-top: 15px; font-size: 15px;">지혜롭고 따뜻한 아이로 키우겠습니다.<br>감사합니다.</p>
+            <div class="wreath-text-overlay" style="transform: translate(-50%, -48%); width: 88%;"> 
+                <h2 style="font-size: 34px; color: #5a7d64; margin-bottom: 16px; font-family: 'Petit Formal Script', cursive; font-weight: 700;">Thank you</h2>
+                <p>
+                    채온이의 첫돌을 맞아<br>
+                    소중한 분들을 모시고자 합니다.<br><br>
+                    따뜻한 마음을 담아 지은 이름처럼,<br>
+                    여러분의 귀한 걸음으로 채온의 첫 번째 생일을<br>
+                    따뜻하게 채워 주시면 더없이 큰 기쁨이 되겠습니다.<br><br>
+                    함께해 주시는 마음 오래도록 간직하며<br>
+                    사랑과 온기를 나눌 줄 아는 아이로 키우겠습니다.<br><br>
+                    감사합니다.
+                </p>
             </div>
         </div>
     </div>
 </div>
 
+<!-- 동그라미 인디케이터 컨테이너 -->
+<div class="indicator-container" id="indicatorContainer"></div>
+
+<!-- 이미지 전체화면 모달 오버레이 -->
+<div class="fullscreen-modal" id="photoModal" onclick="closeModal()">
+    <span class="close-modal" onclick="closeModal()">&times;</span>
+    <img id="modalImg" src="">
+</div>
 
 <script>
-const photoCount=11;
-const slider=document.querySelector('.slider');
-for(let i=1;i<=photoCount;i++){
- const slide=document.createElement('div');
- slide.className='slide';
- slide.style.padding='0';
- slide.innerHTML=`
- <img src="사진${i}.jpg" class="img-main">
- <div class="main-content" style="background:linear-gradient(rgba(0,0,0,.08),rgba(0,0,0,.22));justify-content:flex-end;padding-bottom:60px;">
-   <div style="font-size:15px;letter-spacing:3px;color:#fff;">${String(i).padStart(2,'0')} / ${photoCount}</div>
- </div>`;
- slider.appendChild(slide);
-}
+    const sliderContainer = document.getElementById('sliderContainer');
+    const indicatorContainer = document.getElementById('indicatorContainer');
+    const maxPhotos = 30; 
+    let slides = [];
+    let currentIndex = 0;
+
+    // 1. 순서대로 올린 이미지 동적 탐색 및 로드 구조
+    function initProject() {
+        let loadedCount = 0;
+        
+        for (let i = 1; i <= maxPhotos; i++) {
+            const imgUrl = `사진${i}.jpg`;
+            const testImg = new Image();
+            
+            testImg.onload = function() {
+                const photoSlide = document.createElement('div');
+                photoSlide.className = 'slide';
+                photoSlide.style.padding = '0';
+                photoSlide.innerHTML = `
+                    <img src="${imgUrl}" class="img-fullscreen img-center-focus" onclick="openModal(this.src)">
+                    <div style="position: absolute; bottom: 45px; right: 30px; z-index: 3; background: rgba(0,0,0,0.4); color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: 300; letter-spacing: 1px;">Chae On</div>
+                `;
+                sliderContainer.appendChild(photoSlide);
+                updateSlidesArray();
+            };
+            
+            testImg.onerror = function() {
+                return; // 파일이 순서대로 끊기면 탐색 중단
+            };
+            testImg.src = imgUrl;
+        }
+        updateSlidesArray();
+    }
+
+    function updateSlidesArray() {
+        slides = Array.from(document.querySelectorAll('.slide'));
+        createIndicators();
+        goToSlide(0);
+    }
+
+    // 2. 현재 페이지 동그라미 인디케이터 생성
+    function createIndicators() {
+        indicatorContainer.innerHTML = '';
+        slides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.className = `indicator-dot ${index === 0 ? 'active' : ''}`;
+            dot.addEventListener('click', () => goToSlide(index));
+            indicatorContainer.appendChild(dot);
+        });
+    }
+
+    function goToSlide(index) {
+        if (index < 0 || index >= slides.length) return;
+        slides[currentIndex].classList.remove('active');
+        slides[index].classList.add('active');
+        currentIndex = index;
+
+        // 인디케이터 활성화 업데이트
+        const dots = document.querySelectorAll('.indicator-dot');
+        dots.forEach((dot, idx) => {
+            if (idx === currentIndex) dot.classList.add('active');
+            else dot.classList.remove('active');
+        });
+
+        // 1번 슬라이드나 사진첩 슬라이드처럼 어두운 배경일 경우 점 색상 반전 처리
+        if (slides[currentIndex].style.padding === '0') {
+            indicatorContainer.classList.add('light-dots');
+        } else {
+            indicatorContainer.classList.remove('light-dots');
+        }
+    }
+
+    // 3. 고감도 터치 스와이프 감도 개선 엔진
+    let startX = 0;
+    let distX = 0;
+    const threshold = 40; // 조금만 스와이프해도 자연스럽게 넘어가도록 임계값 최적화
+
+    sliderContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        distX = 0;
+    }, { passive: true });
+
+    sliderContainer.addEventListener('touchmove', (e) => {
+        distX = e.touches[0].clientX - startX;
+    }, { passive: true });
+
+    sliderContainer.addEventListener('touchend', () => {
+        if (Math.abs(distX) >= threshold) {
+            if (distX > 0) goToSlide(currentIndex - 1); // 오른쪽 스와이프 시 이전 페이지
+            else goToSlide(currentIndex + 1);          // 왼쪽 스와이프 시 다음 페이지
+        }
+    });
+
+    // 4. 사진 터치 시 전체화면 보기 모달 제어
+    function openModal(src) {
+        const modal = document.getElementById('photoModal');
+        const modalImg = document.getElementById('modalImg');
+        modalImg.src = src;
+        modal.classList.add('show');
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('photoModal');
+        modal.classList.remove('show');
+    }
+
+    window.onload = initProject;
 </script>
+
 </body>
 </html>
